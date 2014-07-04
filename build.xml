@@ -1,0 +1,40 @@
+<project name="ZHConverter" default="Build">
+
+	<property name="base.dir" value="." />
+	<property name="classes.dir" value="${base.dir}/classes" />
+	<property name="source.dir" value="${base.dir}/src" />
+	<property name="dist.dir" value="${base.dir}/dist" />
+	<property name="application.jar" value="${dist.dir}/ZHConverter.jar" />
+	<property name="application.src.zipfile" value="${dist.dir}/ZHConverter-src.zip" />
+
+	<target name="CreateUnicodeProperties">
+		<native2ascii encoding="utf8" src="php" dest="src/com/spreada/utils/chinese"
+		   includes="**/*.utf8properties" ext=".properties"/>
+
+
+	</target>
+
+	<target name="Build">
+		<delete dir="${classes.dir}"/>
+		<mkdir dir="${classes.dir}"/>
+
+		<copy todir="${classes.dir}">
+		    <fileset dir="${source.dir}" excludes="**/*.java"/>
+		</copy>
+
+		<javac srcdir="${source.dir}" destdir="${classes.dir}" fork="yes" debug="true" source="1.3" target="1.3"/>
+
+		<delete dir="${dist.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+		<jar jarfile="${application.jar}">
+			<fileset dir="${classes.dir}"/>
+		</jar>
+
+		<zip zipfile="${application.src.zipfile}">
+			<fileset dir="${source.dir}"/>
+		</zip>
+
+	</target>
+
+
+</project>
